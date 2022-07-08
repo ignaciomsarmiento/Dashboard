@@ -39,6 +39,7 @@ leaflet(upla) %>%
 
 Esta es la distribución geográfica de precios
 
+[metodologia](https://ignaciomsarmiento.github.io/research.html)
 
 ### evolucion temporal
 
