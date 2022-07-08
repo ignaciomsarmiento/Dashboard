@@ -1,5 +1,5 @@
 ---
-title: "HTML Widgets Showcase"
+title: "Oservatorio test"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
@@ -11,51 +11,36 @@ output:
 library(flexdashboard)
 ```
 
-### Leaflet is a JavaScript library for creating dynamic maps that support panning and zooming along with various annotations.
+### Distribución de precios
 
 ```{r}
 library(leaflet)
-leaflet() %>%
-  addTiles() %>%
-  addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+library(sf)
+library(tidyverse)
+
+upla<-read_sf("upla/UPla.shp")
+dta_2021<-readRDS("median.Rds")
+pal <- colorNumeric(
+  palette = "Reds",
+  domain = dta_2021$median)
+
+
+upla<-left_join(upla,dta_2021)
+#Add labels
+leaflet(upla) %>% 
+  addTiles() %>% 
+  addPolygons(label = paste(upla$UPlNombre,"Median Price=",upla$median, "Number of Properties=",upla$n),
+              stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+              color = ~pal(median))
+
 ```
 
 ***
 
-https://rstudio.github.io/leaflet/
-
-- Interactive panning/zooming
-
-- Compose maps using arbitrary combinations of map tiles, markers, polygons, lines, popups, and GeoJSON.
-
-- Create maps right from the R console or RStudio
-
-- Embed maps in knitr/R Markdown documents and Shiny apps
-
-- Easily render Spatial objects from the sp package, or data frames with latitude/longitude columns
-
-- Use map bounds and mouse events to drive Shiny logic
+Esta es la distribución geográfica de precios
 
 
-### d3heatmap creates interactive D3 heatmaps including support for row/column highlighting and zooming.
-
-```{r}
-#library(d3heatmap)
-#d3heatmap(mtcars, scale="column", colors="Blues")
-```
-
-***
-
-https://github.com/rstudio/d3heatmap/
-
-- Highlight rows/columns by clicking axis labels
-
-- Click and drag over colormap to zoom in (click on colormap to zoom out)
-
-- Optional clustering and dendrograms, courtesy of base::heatmap
-
-
-### Dygraphs provides rich facilities for charting time-series data in R and includes support for many interactive features.
+### evolucion temporal
 
 ```{r}
 library(dygraphs)
@@ -64,50 +49,4 @@ dygraph(nhtemp, main = "New Haven Temperatures") %>%
 ```
 
 ***
-
-https://rstudio.github.io/dygraphs/
-
-- Automatically plots xts time series objects (or any object convertible to xts).
-
-- Highly configurable axis and series display (including optional second Y-axis).
-
-- Rich interactive features including zoom/pan and series/point highlighting.
-
-- Display upper/lower bars (e.g. prediction intervals) around series.
-- Various graph overlays including shaded regions, event lines, and point annotations.
-
-
-### Plotly provides bindings to the plotly.js library and allows you to easily translate your ggplot2 graphics into an interactive web-based version.
-
-```{r}
-library(plotly)
-p <- ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
-            geom_bar(position = "dodge")
-ggplotly(p)
-```
-
-***
-
-https://plot.ly/ggplot2/
-
-If you use ggplot2, `ggplotly()` converts your plots to an interactive, web-based version! It also provides sensible tooltips, which assists decoding of values encoded as visual properties in the plot.
-
-plotly supports some chart types that ggplot2 doesn't (such as 3D surface, point, and line plots). You can create these (or any other plotly) charts using `plot_ly()`.
-
-
-### MetricsGraphics enables easy creation of D3 scatterplots, line charts, and histograms.
-
-```{r}
-library(metricsgraphics)
-mjs_plot(mtcars, x=wt, y=mpg) %>%
-  mjs_point(color_accessor=carb, size_accessor=carb) %>%
-  mjs_labs(x="Weight of Car", y="Miles per Gallon")
-```
-
-***
-
-https://hrbrmstr.github.io/metricsgraphics/
-
-Building metricsgraphics charts follows the “piping” idiom made popular through the magrittr, ggvis and dplyr packages. This makes it possible to avoid one giant function with a ton of parameters and facilitates breaking out the chart building into logical steps. 
-
-While MetricsGraphics.js charts may not have the flexibility of ggplot2, you can build functional, interactive [multi-]line, scatterplot, bar charts & histograms and + even link charts together.
+En testing
