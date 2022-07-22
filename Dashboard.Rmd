@@ -1,5 +1,5 @@
 ---
-title: "Oservatorio test"
+title: "Observatorio Coyuntura CEDE (testing)"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
@@ -11,7 +11,7 @@ output:
 library(flexdashboard)
 ```
 
-### Distribución de precios
+### Mercado Inmobiliario
 
 ```{r}
 library(leaflet)
@@ -41,13 +41,25 @@ Esta es la distribución geográfica de precios
 
 [metodologia](https://ignaciomsarmiento.github.io/research.html)
 
-### evolucion temporal
+### Mercado Laboral
 
 ```{r}
 library(dygraphs)
-dygraph(nhtemp, main = "New Haven Temperatures") %>% 
+dygraph(nhtemp, main = "Pedidos de Empleos") %>% 
   dyRangeSelector(dateWindow = c("1920-01-01", "1960-01-01"))
 ```
 
 ***
 En testing
+
+
+
+### Dinámica de Precios
+
+```{r}
+library(dygraphs)
+dygraph(nhtemp, main = "Precios") %>% 
+  dyRangeSelector(dateWindow = c("1920-01-01", "1960-01-01"))
+```
+
+***
